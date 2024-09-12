@@ -16,6 +16,7 @@ string userName
 string userPassword
 }
 class Comment{
+int commentId
 User commentOp
 string commentBody
 }
