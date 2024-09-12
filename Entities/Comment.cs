@@ -3,6 +3,7 @@
 public class Comment {
     private User CommentOp;
     public string CommentBody { get; set; }
+    public int Id { get; set; }
     public Comment(User Op, string commentBody) {
         CommentOp = Op;
         CommentBody = commentBody;

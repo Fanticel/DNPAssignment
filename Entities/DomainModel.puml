@@ -1,0 +1,27 @@
+@startuml
+'https://plantuml.com/object-diagram
+
+class Post{
+int likes
+int dislikes
+int postId 
+User op
+List<Comment> comments
+string postTitle
+string postBody
+}
+class User{
+int userId
+string userName
+string userPassword
+}
+class Comment{
+User commentOp
+string commentBody
+}
+
+Comment "*" -l->"1" Post
+User "1"-u->"*" Post
+User "1"-u->"*" Comment
+Comment "*"-->"1" Comment
+@enduml

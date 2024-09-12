@@ -2,7 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{5EE52061-10E6-4C66-A6DC-6968FCAD42D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Main", "Main\Main.csproj", "{50116B62-3F47-4001-88D8-B47223F57914}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{50116B62-3F47-4001-88D8-B47223F57914}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryContracts", "Server\RepositoryContracts\RepositoryContracts.csproj", "{50B41EE5-DD8A-43E4-A32D-2CE6CB66F4F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InMemoryRepo", "Server\InMemoryRepo\InMemoryRepo.csproj", "{70A1949E-1BF0-4F5C-AD9A-8F6ED19D4A83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,8 +18,18 @@ Global
 		{50116B62-3F47-4001-88D8-B47223F57914}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50116B62-3F47-4001-88D8-B47223F57914}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50116B62-3F47-4001-88D8-B47223F57914}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50B41EE5-DD8A-43E4-A32D-2CE6CB66F4F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50B41EE5-DD8A-43E4-A32D-2CE6CB66F4F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50B41EE5-DD8A-43E4-A32D-2CE6CB66F4F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50B41EE5-DD8A-43E4-A32D-2CE6CB66F4F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70A1949E-1BF0-4F5C-AD9A-8F6ED19D4A83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70A1949E-1BF0-4F5C-AD9A-8F6ED19D4A83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70A1949E-1BF0-4F5C-AD9A-8F6ED19D4A83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70A1949E-1BF0-4F5C-AD9A-8F6ED19D4A83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{50116B62-3F47-4001-88D8-B47223F57914} = {5EE52061-10E6-4C66-A6DC-6968FCAD42D9}
+		{50B41EE5-DD8A-43E4-A32D-2CE6CB66F4F6} = {5EE52061-10E6-4C66-A6DC-6968FCAD42D9}
+		{70A1949E-1BF0-4F5C-AD9A-8F6ED19D4A83} = {5EE52061-10E6-4C66-A6DC-6968FCAD42D9}
 	EndGlobalSection
 EndGlobal

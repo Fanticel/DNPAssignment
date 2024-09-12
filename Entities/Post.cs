@@ -1,15 +1,15 @@
 ﻿namespace Main;
 
 public class Post {
-    private int Likes;
-    private int Dislikes;
-    private int PostId;
-    private User Op;
-    private List<Comment> Comments;
+    public int Likes { get; set; }
+    public int Dislikes { get; set; }
+    public int PostId { get; set; }
+    public User Op { get; set; }
+    public List<Comment> Comments { get; set; }
     public string PostTitle { get; set; }
     public string PostBody { get; set; }
+    
     public Post(User Op, string postTitle, string postBody) {
-        PostId = 1;
         Likes = 0;
         Dislikes = 0;
         this.Op = Op;
