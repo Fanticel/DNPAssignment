@@ -5,6 +5,10 @@ namespace InMemoryRepo;
 
 public class UserInMemoryRepo : IUserRepo {
     private List<User> userList;
+
+    public UserInMemoryRepo() {
+        userList = new List<User>();
+    }
     public Task<User> AddAsync(User user) {
         user.Id = userList.Any() ? userList.Max(u => u.Id) + 1 : 1;
         userList.Add(user);
@@ -37,4 +41,13 @@ public class UserInMemoryRepo : IUserRepo {
     public IQueryable<User> GetMany() {
         return userList.AsQueryable();
     }
+    public void CreateDummy() {
+        AddAsync(new User("Alice123", "SecurePass1!"));
+        AddAsync(new User("Bob_the_Builder", "FixIt2023#"));
+        AddAsync(new User("Charlie88", "ChocoLover$"));
+        AddAsync(new User("Daisy_Duke", "CountryLife@2024"));
+        AddAsync(new User("a", "b"));
+        AddAsync(new User("Eve_Electron", "TechSavvy&2022"));
+        AddAsync(new User("Frankie_Fish", "SwimFast%"));
+    } 
 }

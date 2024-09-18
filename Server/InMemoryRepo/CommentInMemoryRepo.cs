@@ -7,6 +7,9 @@ namespace InMemoryRepo;
 public class CommentInMemoryRepo : ICommentRepo {
     private List<Comment> commentList;
 
+    public CommentInMemoryRepo() {
+        commentList = new List<Comment>();
+    }
     public Task<Comment> AddAsync(Comment comment) {
         comment.Id = commentList.Any() ? commentList.Max(c => c.Id) + 1 : 1;
         commentList.Add(comment);
@@ -38,5 +41,12 @@ public class CommentInMemoryRepo : ICommentRepo {
     }
     public IQueryable<Comment> GetMany() {
         return commentList.AsQueryable();
+    }
+    public void CreateDummy() {
+        AddAsync(new Comment(1, "Very cool"));
+        AddAsync(new Comment(2, "You suck"));
+        AddAsync(new Comment(1, "Pog"));
+        AddAsync(new Comment(3, "AY dios mio"));
+        AddAsync(new Comment(3, "Very cool"));
     }
 }
