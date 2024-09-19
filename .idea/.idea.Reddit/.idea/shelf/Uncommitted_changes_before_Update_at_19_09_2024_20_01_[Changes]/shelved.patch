@@ -1,0 +1,403 @@
+Index: Server/Entities/DomainModel.puml
+===================================================================
+diff --git a/Server/Entities/DomainModel.puml b/Server/Entities/DomainModel.puml
+deleted file mode 100644
+--- a/Server/Entities/DomainModel.puml	(revision 8c9eaf9bb587f2c50ff8b87961b555552ca75ad2)
++++ /dev/null	(revision 8c9eaf9bb587f2c50ff8b87961b555552ca75ad2)
+@@ -1,27 +0,0 @@
+-@startuml
+-'https://plantuml.com/object-diagram
+-
+-class Post{
+-int likes
+-int dislikes
+-int postId 
+-User op
+-List<Comment> comments
+-string postTitle
+-string postBody
+-}
+-class User{
+-int userId
+-string userName
+-string userPassword
+-}
+-class Comment{
+-User commentOp
+-string commentBody
+-}
+-
+-Comment "*" -l->"1" Post
+-User "1"-u->"*" Post
+-User "1"-u->"*" Comment
+-Comment "*"-->"1" Comment
+-@enduml
+Index: .idea/.idea.Reddit/.idea/shelf/Uncommitted_changes_before_Update_at_19_09_2024_19_51_[Changes]/shelved.patch
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/.idea.Reddit/.idea/shelf/Uncommitted_changes_before_Update_at_19_09_2024_19_51_[Changes]/shelved.patch b/.idea/.idea.Reddit/.idea/shelf/Uncommitted_changes_before_Update_at_19_09_2024_19_51_[Changes]/shelved.patch
+new file mode 100644
+--- /dev/null	(date 1726768302034)
++++ b/.idea/.idea.Reddit/.idea/shelf/Uncommitted_changes_before_Update_at_19_09_2024_19_51_[Changes]/shelved.patch	(date 1726768302034)
+@@ -0,0 +1,257 @@
++Index: Server/InMemoryRepo/PostInMemoryRepo.cs
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
++<+>using Main;\r\nusing RepositoryContracts;\r\n\r\nnamespace InMemoryRepo;\r\n\r\npublic class PostInMemoryRepo : IPostRepo {\r\n    private List<Post> postList;\r\n    public PostInMemoryRepo() {\r\n        postList = new List<Post>();\r\n    }\r\n    public Task<Post> AddAsync(Post post) {\r\n        post.PostId = postList.Any() ? postList.Max(p => p.PostId) + 1 : 1;\r\n        postList.Add(post);\r\n        return Task.FromResult(post);\r\n    }\r\n\r\n    public Task UpdateAsync(Post post) {\r\n        Post? existingPost = postList.SingleOrDefault(p => p.PostId == post.PostId);\r\n        if (existingPost is null) {\r\n            throw new InvalidOperationException($\"Post with ID {post.PostId} not found :(\");\r\n        }\r\n        postList.Remove(existingPost);\r\n        postList.Add(post);\r\n        return Task.CompletedTask;\r\n    }\r\n\r\n    public Task DeleteAsync(int id) {\r\n        Post? postToRemove = postList.SingleOrDefault(p => p.PostId == id);\r\n        if (postToRemove is null) {\r\n            throw new InvalidOperationException($\"Post with ID {id} not found :(\");\r\n        }\r\n        postList.Remove(postToRemove);\r\n        return Task.CompletedTask;\r\n    }\r\n\r\n    public Task<Post> GetSingleAsync(int id) {\r\n        Post? postToGet = postList.SingleOrDefault(p => p.PostId == id);\r\n        if (postToGet is null) {\r\n            throw new InvalidOperationException($\"Post with id {id} not found :(\");\r\n        }\r\n        return Task.FromResult(postToGet);\r\n    }\r\n\r\n    public IQueryable<Post> GetMany() {\r\n        return postList.AsQueryable();\r\n    }\r\n    public void CreateDummy() {\r\n        AddAsync(new Post(1, \"AMA: I spent a year living off-grid in the woods—ask me anything!\", \"After leaving my 9-to-5 job, I decided to live off-grid for a year. I built my own cabin, grew my own food, and learned a ton about self-sufficiency. If you’re curious about anything from my daily routine to the challenges I faced, feel free to ask!\")).Result.PostComment(2);\r\n        AddAsync(new Post(2, \"AITA for not inviting my sister to my wedding after she tried to sabotage my engagement?\", \"So, I recently got engaged and was super excited to share the news. However, my sister made a huge scene at the family dinner, claiming I was 'stealing her thunder' since she had plans to get engaged soon. I decided not to invite her to my wedding. Now, my family is upset with me. AITA?\"));\r\n        AddAsync(new Post(3, \"My partner wants to open our relationship, but I’m not sure. What should I do?\", \"My partner brought up the idea of opening our relationship, claiming it would make us stronger. I’m feeling unsure and a bit insecure about it. Has anyone gone through this? How did you handle it?\")).Result.PostComment(3);\r\n        AddAsync(new Post(4, \"I accidentally ghosted my best friend for a month and now I’m scared to reach out.\", \"I got super busy with work and personal issues, and I didn't respond to texts or calls from my best friend. Now I feel terrible and don’t know how to apologize. What should I do?\"));\r\n        AddAsync(new Post(5, \"What’s the most bizarre coincidence you’ve ever experienced?\", \"I once ran into my childhood best friend at a random airport halfway across the world. We hadn’t seen each other in 15 years! What are your craziest coincidence stories?\")).Result.PostComment(1);\r\n        postList[3].PostComment(4);\r\n        postList[3].PostComment(5);\r\n        Random r = new Random();\r\n        foreach (Post p in postList) {\r\n            p.Likes = r.Next(200);\r\n            p.Dislikes = r.Next(200);\r\n        }\r\n    } \r\n}
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++diff --git a/Server/InMemoryRepo/PostInMemoryRepo.cs b/Server/InMemoryRepo/PostInMemoryRepo.cs
++--- a/Server/InMemoryRepo/PostInMemoryRepo.cs	(revision 8c9eaf9bb587f2c50ff8b87961b555552ca75ad2)
+++++ b/Server/InMemoryRepo/PostInMemoryRepo.cs	(date 1726727727570)
++@@ -54,8 +54,15 @@
++         postList[3].PostComment(5);
++         Random r = new Random();
++         foreach (Post p in postList) {
++-            p.Likes = r.Next(200);
++-            p.Dislikes = r.Next(200);
+++            Console.WriteLine(r.Next(200));
+++            for (int i = 20; i < r.Next(100,200); i++) {
+++                // Console.WriteLine(i);
+++                p.Like(i);
+++            }
+++            for (int i = 20; i < r.Next(100,200); i++) {
+++                // Console.WriteLine(i);
+++                p.Dislike(i);
+++            }
++         }
++     } 
++ }
++\ No newline at end of file
++Index: Server/Entities/Post.cs
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
++<+>namespace Main;\r\n\r\npublic class Post {\r\n    //TODO: probably switch the likes/dislikes from a counter to a list of users that liked?\r\n    public int Likes { get; set; }\r\n    public int Dislikes { get; set; }\r\n    public int PostId { get; set; }\r\n    public int posterId;\r\n    public List<int> CommentIds { get; set; }\r\n    public string PostTitle { get; set; }\r\n    public string PostBody { get; set; }\r\n    \r\n    public Post(int posterId, string postTitle, string postBody) {\r\n        Likes = 0;\r\n        Dislikes = 0;\r\n        this.posterId = posterId;\r\n        PostTitle = postTitle;\r\n        PostBody = postBody;\r\n        CommentIds = new List<int>();\r\n    }\r\n\r\n    public void PostComment(int commentId) {\r\n        CommentIds.Add(commentId);\r\n    }\r\n    public void Like() {\r\n        Likes++;\r\n    }\r\n    public void Dislike() {\r\n        Dislikes++;\r\n    }\r\n}
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++diff --git a/Server/Entities/Post.cs b/Server/Entities/Post.cs
++--- a/Server/Entities/Post.cs	(revision 8c9eaf9bb587f2c50ff8b87961b555552ca75ad2)
+++++ b/Server/Entities/Post.cs	(date 1726727222795)
++@@ -2,8 +2,10 @@
++ 
++ public class Post {
++     //TODO: probably switch the likes/dislikes from a counter to a list of users that liked?
++-    public int Likes { get; set; }
++-    public int Dislikes { get; set; }
+++    public List<int> LikedId;
+++    public List<int> DislikedId;
+++    // public int Likes { get; set; }
+++    // public int Dislikes { get; set; }
++     public int PostId { get; set; }
++     public int posterId;
++     public List<int> CommentIds { get; set; }
++@@ -11,8 +13,8 @@
++     public string PostBody { get; set; }
++     
++     public Post(int posterId, string postTitle, string postBody) {
++-        Likes = 0;
++-        Dislikes = 0;
+++        LikedId = new List<int>();
+++        DislikedId = new List<int>();
++         this.posterId = posterId;
++         PostTitle = postTitle;
++         PostBody = postBody;
++@@ -22,10 +24,26 @@
++     public void PostComment(int commentId) {
++         CommentIds.Add(commentId);
++     }
++-    public void Like() {
++-        Likes++;
+++    public void Like(int thisUserId) {
+++        if (!LikedId.Contains(thisUserId)) {
+++            LikedId.Add(thisUserId);
+++        }
+++        else {
+++            LikedId.Remove(thisUserId);
+++        }
++     }
++-    public void Dislike() {
++-        Dislikes++;
+++    public void Dislike(int thisUserId) {
+++        if (!DislikedId.Contains(thisUserId)) {
+++            DislikedId.Add(thisUserId);
+++        }
+++        else {
+++            DislikedId.Remove(thisUserId);
+++        }
++     }
+++    public int CountLikes() {
+++        return LikedId.Count;
+++    }
+++    public int CountDislikes() {
+++        return DislikedId.Count;
+++    }
++ }
++\ No newline at end of file
++Index: Server/CLI/UI/CliApp.cs
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
++<+>using InMemoryRepo;\r\nusing Main;\r\n\r\nnamespace CLI.UI;\r\n\r\npublic class CliApp {\r\n    private PostInMemoryRepo _postInMemoryRepo;\r\n    private CommentInMemoryRepo _commentInMemoryRepo;\r\n    private UserInMemoryRepo _userInMemoryRepo;\r\n    private LoginPage _loginPage;\r\n    private SinglePostPage _singlePostPage;\r\n    private ProfilePage _profilePage;\r\n    private PostCreationPage _postCreationPage;\r\n    private int thisUserId;\r\n    private bool running;\r\n    public CliApp(PostInMemoryRepo postInMemoryRepo, CommentInMemoryRepo commentInMemoryRepo, UserInMemoryRepo userInMemoryRepo) {\r\n        _postInMemoryRepo = postInMemoryRepo;\r\n        _commentInMemoryRepo = commentInMemoryRepo;\r\n        _userInMemoryRepo = userInMemoryRepo;\r\n        _loginPage = new LoginPage(_userInMemoryRepo);\r\n        _profilePage = new ProfilePage(_userInMemoryRepo);\r\n        _postCreationPage = new PostCreationPage(_postInMemoryRepo);\r\n        running = true;\r\n    }\r\n    public void StartAsync() {\r\n        thisUserId = _loginPage.HandleLoginBegin();\r\n        _singlePostPage = new SinglePostPage(_commentInMemoryRepo, _userInMemoryRepo, thisUserId);\r\n        while (running) {\r\n            Console.WriteLine(GenerateHomePage());\r\n            Console.WriteLine(\"Inspect post : 1;x (x being the id of the post)\\n\" +\r\n                              \"Post a new post : 2\\n\" +\r\n                              \"View my profile : 3\\n\" +\r\n                              \"Close the app : 4\");\r\n            HandleResponse(Console.ReadLine());\r\n        }\r\n        Console.WriteLine(\"See you later ;)\");\r\n    }\r\n    private string GenerateHomePage() {\r\n        string ans = \"\";\r\n        ans += (\"| Home page |\\n_____________\");\r\n        foreach (Post p in _postInMemoryRepo.GetMany()) {\r\n            ans += ($\"\\n| Id : {p.PostId} |\\n| {_userInMemoryRepo.GetSingleAsync(p.posterId).Result.UserName} |\\n| {p.PostTitle} |\\n| {p.Likes} : {p.Dislikes} |\\n_________\");\r\n        }\r\n        return ans;\r\n    }\r\n    private void HandleResponse(string resp) {\r\n        string[] ans = resp.Split(\";\");\r\n        switch (ans[0]) {\r\n            case \"1\":\r\n                _singlePostPage.ShowFullPost(_postInMemoryRepo.GetSingleAsync(int.Parse(ans[1])).Result);\r\n                break;\r\n            case \"2\":\r\n                _postCreationPage.ShowCreation(thisUserId);\r\n                break;\r\n            case \"3\":\r\n                _profilePage.ShowProfile(thisUserId);\r\n                break;\r\n            case \"4\":\r\n                running = false;\r\n                break;\r\n            default:\r\n                Console.WriteLine(\"Unrecognised command, try again\");\r\n                break;\r\n        }\r\n    }\r\n}
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++diff --git a/Server/CLI/UI/CliApp.cs b/Server/CLI/UI/CliApp.cs
++--- a/Server/CLI/UI/CliApp.cs	(revision 8c9eaf9bb587f2c50ff8b87961b555552ca75ad2)
+++++ b/Server/CLI/UI/CliApp.cs	(date 1726727222805)
++@@ -39,7 +39,7 @@
++         string ans = "";
++         ans += ("| Home page |\n_____________");
++         foreach (Post p in _postInMemoryRepo.GetMany()) {
++-            ans += ($"\n| Id : {p.PostId} |\n| {_userInMemoryRepo.GetSingleAsync(p.posterId).Result.UserName} |\n| {p.PostTitle} |\n| {p.Likes} : {p.Dislikes} |\n_________");
+++            ans += ($"\n| Id : {p.PostId} |\n| {_userInMemoryRepo.GetSingleAsync(p.posterId).Result.UserName} |\n| {p.PostTitle} |\n| {p.CountLikes()} : {p.CountDislikes()} |\n_________");
++         }
++         return ans;
++     }
++Index: Server/CLI/UI/SinglePostPage.cs
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
++<+>using InMemoryRepo;\r\nusing Main;\r\n\r\nnamespace CLI.UI;\r\n\r\npublic class SinglePostPage {\r\n    private CommentInMemoryRepo _commentInMemoryRepo;\r\n    private UserInMemoryRepo _userInMemoryRepo;\r\n    private int _localUser;\r\n    private bool running;\r\n    public SinglePostPage(CommentInMemoryRepo commentInMemoryRepo, UserInMemoryRepo userInMemoryRepo, int localUser) {\r\n        _commentInMemoryRepo = commentInMemoryRepo;\r\n        _userInMemoryRepo = userInMemoryRepo;\r\n        _localUser = localUser;\r\n    }\r\n    public void ShowFullPost(Post viewedPost) {\r\n        running = true;\r\n        while (running) {\r\n            Console.WriteLine($\"Op : {_userInMemoryRepo.GetSingleAsync(viewedPost.posterId).Result.UserName}\\n\" +\r\n                              $\"\\tPost title : \\t{viewedPost.PostTitle}\\n\" +\r\n                              $\"\\t\\tPost body : \\t{viewedPost.PostBody}\\n\\n\" +\r\n                              $\"Up : {viewedPost.Likes} | Down : {viewedPost.Dislikes}\\n\" +\r\n                              $\"Comments: \");\r\n            foreach (int x in viewedPost.CommentIds) {\r\n                Comment c = _commentInMemoryRepo.GetSingleAsync(x).Result;\r\n                Console.WriteLine($\"\\t\\t{_userInMemoryRepo.GetSingleAsync(c.getPoster()).Result.UserName} says \" +\r\n                                  $\"\\\"{c.CommentBody}\\\"\");\r\n            }\r\n            Console.WriteLine(\"Like post : 1\\n\" +\r\n                              \"Dislike post : 2\\n\" +\r\n                              \"Leave a comment : 3\\n\" +\r\n                              \"Go back to homepage : 4\");\r\n            HandleResponse(Console.ReadLine(), viewedPost);\r\n        }\r\n    }\r\n    public void HandleResponse(string? response, Post viewedPost) {\r\n        switch (response) {\r\n            case \"1\":\r\n                viewedPost.Likes++;\r\n                break;\r\n            case \"2\":\r\n                viewedPost.Dislikes++;\r\n                break;\r\n            case \"3\": {\r\n                Console.Write(\"What should the comment say? : \");\r\n                string? ans = Console.ReadLine();\r\n                if (ans is not null && ans.Any()) {\r\n                    viewedPost.PostComment(_commentInMemoryRepo.AddAsync(new Comment(_localUser, ans)).Result.Id);\r\n                }\r\n                else {\r\n                    Console.WriteLine(\"Can't post an empty comment, press enter to continue\");\r\n                    Console.ReadLine();\r\n                }\r\n                break;\r\n            }\r\n            case \"4\":\r\n                running = false;\r\n                break;\r\n        }\r\n    }\r\n}
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++diff --git a/Server/CLI/UI/SinglePostPage.cs b/Server/CLI/UI/SinglePostPage.cs
++--- a/Server/CLI/UI/SinglePostPage.cs	(revision 8c9eaf9bb587f2c50ff8b87961b555552ca75ad2)
+++++ b/Server/CLI/UI/SinglePostPage.cs	(date 1726727398939)
++@@ -19,7 +19,7 @@
++             Console.WriteLine($"Op : {_userInMemoryRepo.GetSingleAsync(viewedPost.posterId).Result.UserName}\n" +
++                               $"\tPost title : \t{viewedPost.PostTitle}\n" +
++                               $"\t\tPost body : \t{viewedPost.PostBody}\n\n" +
++-                              $"Up : {viewedPost.Likes} | Down : {viewedPost.Dislikes}\n" +
+++                              $"Up : {viewedPost.CountLikes()} | Down : {viewedPost.CountDislikes()}\n" +
++                               $"Comments: ");
++             foreach (int x in viewedPost.CommentIds) {
++                 Comment c = _commentInMemoryRepo.GetSingleAsync(x).Result;
++@@ -36,10 +36,10 @@
++     public void HandleResponse(string? response, Post viewedPost) {
++         switch (response) {
++             case "1":
++-                viewedPost.Likes++;
+++                viewedPost.Like(_localUser);
++                 break;
++             case "2":
++-                viewedPost.Dislikes++;
+++                viewedPost.Dislike(_localUser);
++                 break;
++             case "3": {
++                 Console.Write("What should the comment say? : ");
++Index: .idea/.idea.Reddit/.idea/workspace.xml
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
++<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoGeneratedRunConfigurationManager\">\r\n    <projectFile>Main/Main.csproj</projectFile>\r\n    <projectFile>Reddit/Reddit.csproj</projectFile>\r\n    <projectFile>Server/CLI/CLI.csproj</projectFile>\r\n  </component>\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"1d97c9a1-2138-4b65-b1d5-194510053908\" name=\"Changes\" comment=\"\">\r\n      <change afterPath=\"$PROJECT_DIR$/Server/CLI/UI/CliApp.cs\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/Server/CLI/UI/LoginPage.cs\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/Server/CLI/UI/PostCreationPage.cs\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/Server/CLI/UI/ProfilePage.cs\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/Server/CLI/UI/SinglePostPage.cs\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/.idea.Reddit/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/.idea.Reddit/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Entities/Comment.cs\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Server/Entities/Comment.cs\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Entities/DomainModel.puml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Server/Entities/DomainModel.puml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Entities/Post.cs\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Server/Entities/Post.cs\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Entities/PostList.cs\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Entities/Program.cs\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Entities/User.cs\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Server/Entities/User.cs\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Reddit.sln\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Reddit.sln\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Server/InMemoryRepo/CommentInMemoryRepo.cs\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Server/InMemoryRepo/CommentInMemoryRepo.cs\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Server/InMemoryRepo/InMemoryRepo.csproj\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Server/InMemoryRepo/InMemoryRepo.csproj\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Server/InMemoryRepo/PostInMemoryRepo.cs\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Server/InMemoryRepo/PostInMemoryRepo.cs\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Server/InMemoryRepo/UserInMemoryRepo.cs\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Server/InMemoryRepo/UserInMemoryRepo.cs\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Server/RepositoryContracts/RepositoryContracts.csproj\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Server/RepositoryContracts/RepositoryContracts.csproj\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"DpaMonitoringSettings\">\r\n    <option name=\"autoShow\" value=\"false\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"UML Object\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"HighlightingSettingsPerFile\">\r\n    <setting file=\"file://$PROJECT_DIR$/Entities/Comment.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Entities/Post.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Entities/PostList.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Entities/Program.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Entities/User.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Reddit/Program.cs\" root0=\"SKIP_HIGHLIGHTING\" />\r\n  </component>\r\n  <component name=\"MetaFilesCheckinStateConfiguration\" checkMetaFiles=\"true\" />\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 1\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2lgoH33CYINJ6cB2R9DxOxPNs58\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \".NET Project.CLI.executor\": \"Run\",\r\n    \".NET Project.Main.executor\": \"Run\",\r\n    \"DefaultPlantUmlFileTemplate\": \"UML Object\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"node.js.detected.package.eslint\": \"true\",\r\n    \"node.js.detected.package.tslint\": \"true\",\r\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\r\n    \"nodejs_package_manager_path\": \"npm\",\r\n    \"settings.editor.selected.configurable\": \"preferences.keymap\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RunManager\" selected=\".NET Project.CLI\">\r\n    <configuration name=\"CLI\" type=\"DotNetProject\" factoryName=\".NET Project\">\r\n      <option name=\"EXE_PATH\" value=\"\" />\r\n      <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"\" />\r\n      <option name=\"PASS_PARENT_ENVS\" value=\"1\" />\r\n      <option name=\"USE_EXTERNAL_CONSOLE\" value=\"0\" />\r\n      <option name=\"USE_MONO\" value=\"0\" />\r\n      <option name=\"RUNTIME_ARGUMENTS\" value=\"\" />\r\n      <option name=\"PROJECT_PATH\" value=\"$PROJECT_DIR$/Server/CLI/CLI.csproj\" />\r\n      <option name=\"PROJECT_EXE_PATH_TRACKING\" value=\"1\" />\r\n      <option name=\"PROJECT_ARGUMENTS_TRACKING\" value=\"1\" />\r\n      <option name=\"PROJECT_WORKING_DIRECTORY_TRACKING\" value=\"1\" />\r\n      <option name=\"PROJECT_KIND\" value=\"DotNetCore\" />\r\n      <option name=\"PROJECT_TFM\" value=\"\" />\r\n      <method v=\"2\">\r\n        <option name=\"Build\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"Main\" type=\"DotNetProject\" factoryName=\".NET Project\">\r\n      <option name=\"EXE_PATH\" value=\"\" />\r\n      <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"\" />\r\n      <option name=\"PASS_PARENT_ENVS\" value=\"1\" />\r\n      <option name=\"USE_EXTERNAL_CONSOLE\" value=\"0\" />\r\n      <option name=\"USE_MONO\" value=\"0\" />\r\n      <option name=\"RUNTIME_ARGUMENTS\" value=\"\" />\r\n      <option name=\"PROJECT_PATH\" value=\"$PROJECT_DIR$/Entities/Entities.csproj\" />\r\n      <option name=\"PROJECT_EXE_PATH_TRACKING\" value=\"1\" />\r\n      <option name=\"PROJECT_ARGUMENTS_TRACKING\" value=\"1\" />\r\n      <option name=\"PROJECT_WORKING_DIRECTORY_TRACKING\" value=\"1\" />\r\n      <option name=\"PROJECT_KIND\" value=\"DotNetCore\" />\r\n      <option name=\"PROJECT_TFM\" value=\"\" />\r\n      <method v=\"2\">\r\n        <option name=\"Build\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"Reddit\" type=\"DotNetProject\" factoryName=\".NET Project\">\r\n      <option name=\"EXE_PATH\" value=\"\" />\r\n      <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"\" />\r\n      <option name=\"PASS_PARENT_ENVS\" value=\"1\" />\r\n      <option name=\"USE_EXTERNAL_CONSOLE\" value=\"0\" />\r\n      <option name=\"USE_MONO\" value=\"0\" />\r\n      <option name=\"RUNTIME_ARGUMENTS\" value=\"\" />\r\n      <option name=\"PROJECT_PATH\" value=\"$PROJECT_DIR$/Reddit/Reddit.csproj\" />\r\n      <option name=\"PROJECT_EXE_PATH_TRACKING\" value=\"1\" />\r\n      <option name=\"PROJECT_ARGUMENTS_TRACKING\" value=\"1\" />\r\n      <option name=\"PROJECT_WORKING_DIRECTORY_TRACKING\" value=\"1\" />\r\n      <option name=\"PROJECT_KIND\" value=\"DotNetCore\" />\r\n      <option name=\"PROJECT_TFM\" value=\"\" />\r\n      <method v=\"2\">\r\n        <option name=\"Build\" />\r\n      </method>\r\n    </configuration>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"1d97c9a1-2138-4b65-b1d5-194510053908\" name=\"Changes\" comment=\"\" />\r\n      <created>1725610988681</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1725610988681</updated>\r\n      <workItem from=\"1725610989949\" duration=\"43000\" />\r\n      <workItem from=\"1725622153046\" duration=\"8570000\" />\r\n      <workItem from=\"1725963594558\" duration=\"674000\" />\r\n      <workItem from=\"1725964288979\" duration=\"4929000\" />\r\n      <workItem from=\"1726078996935\" duration=\"1413000\" />\r\n      <workItem from=\"1726143788228\" duration=\"13000\" />\r\n      <workItem from=\"1726153882218\" duration=\"3958000\" />\r\n      <workItem from=\"1726208673676\" duration=\"263000\" />\r\n      <workItem from=\"1726654681768\" duration=\"12738000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"InitCommit\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1725963720613</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1725963720613</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Init2\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1725963832554</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1725963832554</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"Implemented memory Repos\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726157600295</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726157600295</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"4\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"UnityCheckinConfiguration\" checkUnsavedScenes=\"true\" />\r\n  <component name=\"UnityProjectConfiguration\" hasMinimizedUI=\"false\" />\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <option name=\"LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN\" value=\"false\" />\r\n    <option name=\"CLEAR_INITIAL_COMMIT_MESSAGE\" value=\"true\" />\r\n    <MESSAGE value=\"InitCommit\" />\r\n    <MESSAGE value=\"Init2\" />\r\n    <MESSAGE value=\"Implemented memory Repos\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Implemented memory Repos\" />\r\n  </component>\r\n  <component name=\"XSLT-Support.FileAssociations.UIState\">\r\n    <expand />\r\n    <select />\r\n  </component>\r\n</project>
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++diff --git a/.idea/.idea.Reddit/.idea/workspace.xml b/.idea/.idea.Reddit/.idea/workspace.xml
++--- a/.idea/.idea.Reddit/.idea/workspace.xml	(revision 8c9eaf9bb587f2c50ff8b87961b555552ca75ad2)
+++++ b/.idea/.idea.Reddit/.idea/workspace.xml	(date 1726727735802)
++@@ -10,24 +10,11 @@
++   </component>
++   <component name="ChangeListManager">
++     <list default="true" id="1d97c9a1-2138-4b65-b1d5-194510053908" name="Changes" comment="">
++-      <change afterPath="$PROJECT_DIR$/Server/CLI/UI/CliApp.cs" afterDir="false" />
++-      <change afterPath="$PROJECT_DIR$/Server/CLI/UI/LoginPage.cs" afterDir="false" />
++-      <change afterPath="$PROJECT_DIR$/Server/CLI/UI/PostCreationPage.cs" afterDir="false" />
++-      <change afterPath="$PROJECT_DIR$/Server/CLI/UI/ProfilePage.cs" afterDir="false" />
++-      <change afterPath="$PROJECT_DIR$/Server/CLI/UI/SinglePostPage.cs" afterDir="false" />
++       <change beforePath="$PROJECT_DIR$/.idea/.idea.Reddit/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Reddit/.idea/workspace.xml" afterDir="false" />
++-      <change beforePath="$PROJECT_DIR$/Entities/Comment.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Entities/Comment.cs" afterDir="false" />
++-      <change beforePath="$PROJECT_DIR$/Entities/DomainModel.puml" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Entities/DomainModel.puml" afterDir="false" />
++-      <change beforePath="$PROJECT_DIR$/Entities/Post.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Entities/Post.cs" afterDir="false" />
++-      <change beforePath="$PROJECT_DIR$/Entities/PostList.cs" beforeDir="false" />
++-      <change beforePath="$PROJECT_DIR$/Entities/Program.cs" beforeDir="false" />
++-      <change beforePath="$PROJECT_DIR$/Entities/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Entities/User.cs" afterDir="false" />
++-      <change beforePath="$PROJECT_DIR$/Reddit.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Reddit.sln" afterDir="false" />
++-      <change beforePath="$PROJECT_DIR$/Server/InMemoryRepo/CommentInMemoryRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/InMemoryRepo/CommentInMemoryRepo.cs" afterDir="false" />
++-      <change beforePath="$PROJECT_DIR$/Server/InMemoryRepo/InMemoryRepo.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Server/InMemoryRepo/InMemoryRepo.csproj" afterDir="false" />
+++      <change beforePath="$PROJECT_DIR$/Server/CLI/UI/CliApp.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/CLI/UI/CliApp.cs" afterDir="false" />
+++      <change beforePath="$PROJECT_DIR$/Server/CLI/UI/SinglePostPage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/CLI/UI/SinglePostPage.cs" afterDir="false" />
+++      <change beforePath="$PROJECT_DIR$/Server/Entities/Post.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Entities/Post.cs" afterDir="false" />
++       <change beforePath="$PROJECT_DIR$/Server/InMemoryRepo/PostInMemoryRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/InMemoryRepo/PostInMemoryRepo.cs" afterDir="false" />
++-      <change beforePath="$PROJECT_DIR$/Server/InMemoryRepo/UserInMemoryRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/InMemoryRepo/UserInMemoryRepo.cs" afterDir="false" />
++-      <change beforePath="$PROJECT_DIR$/Server/RepositoryContracts/RepositoryContracts.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Server/RepositoryContracts/RepositoryContracts.csproj" afterDir="false" />
++     </list>
++     <option name="SHOW_DIALOG" value="false" />
++     <option name="HIGHLIGHT_CONFLICTS" value="true" />
++@@ -65,21 +52,21 @@
++     <option name="hideEmptyMiddlePackages" value="true" />
++     <option name="showLibraryContents" value="true" />
++   </component>
++-  <component name="PropertiesComponent"><![CDATA[{
++-  "keyToString": {
++-    ".NET Project.CLI.executor": "Run",
++-    ".NET Project.Main.executor": "Run",
++-    "DefaultPlantUmlFileTemplate": "UML Object",
++-    "RunOnceActivity.ShowReadmeOnStart": "true",
++-    "node.js.detected.package.eslint": "true",
++-    "node.js.detected.package.tslint": "true",
++-    "node.js.selected.package.eslint": "(autodetect)",
++-    "node.js.selected.package.tslint": "(autodetect)",
++-    "nodejs_package_manager_path": "npm",
++-    "settings.editor.selected.configurable": "preferences.keymap",
++-    "vue.rearranger.settings.migration": "true"
+++  <component name="PropertiesComponent">{
+++  &quot;keyToString&quot;: {
+++    &quot;.NET Project.CLI.executor&quot;: &quot;Run&quot;,
+++    &quot;.NET Project.Main.executor&quot;: &quot;Run&quot;,
+++    &quot;DefaultPlantUmlFileTemplate&quot;: &quot;UML Object&quot;,
+++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+++    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+++    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+++    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+++    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+++    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+++    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+++    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
++   }
++-}]]></component>
+++}</component>
++   <component name="RunManager" selected=".NET Project.CLI">
++     <configuration name="CLI" type="DotNetProject" factoryName=".NET Project">
++       <option name="EXE_PATH" value="" />
++@@ -152,7 +139,8 @@
++       <workItem from="1726143788228" duration="13000" />
++       <workItem from="1726153882218" duration="3958000" />
++       <workItem from="1726208673676" duration="263000" />
++-      <workItem from="1726654681768" duration="12738000" />
+++      <workItem from="1726654681768" duration="13502000" />
+++      <workItem from="1726726403777" duration="1328000" />
++     </task>
++     <task id="LOCAL-00001" summary="InitCommit">
++       <option name="closed" value="true" />
++@@ -178,7 +166,15 @@
++       <option name="project" value="LOCAL" />
++       <updated>1726157600295</updated>
++     </task>
++-    <option name="localTasksCounter" value="4" />
+++    <task id="LOCAL-00004" summary="Commandline input update">
+++      <option name="closed" value="true" />
+++      <created>1726679852497</created>
+++      <option name="number" value="00004" />
+++      <option name="presentableId" value="LOCAL-00004" />
+++      <option name="project" value="LOCAL" />
+++      <updated>1726679852497</updated>
+++    </task>
+++    <option name="localTasksCounter" value="5" />
++     <servers />
++   </component>
++   <component name="TypeScriptGeneratedFilesManager">
++@@ -203,7 +199,8 @@
++     <MESSAGE value="InitCommit" />
++     <MESSAGE value="Init2" />
++     <MESSAGE value="Implemented memory Repos" />
++-    <option name="LAST_COMMIT_MESSAGE" value="Implemented memory Repos" />
+++    <MESSAGE value="Commandline input update" />
+++    <option name="LAST_COMMIT_MESSAGE" value="Commandline input update" />
++   </component>
++   <component name="XSLT-Support.FileAssociations.UIState">
++     <expand />
+Index: .idea/.idea.Reddit/.idea/shelf/Uncommitted_changes_before_Update_at_19_09_2024_19_51__Changes_.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/.idea.Reddit/.idea/shelf/Uncommitted_changes_before_Update_at_19_09_2024_19_51__Changes_.xml b/.idea/.idea.Reddit/.idea/shelf/Uncommitted_changes_before_Update_at_19_09_2024_19_51__Changes_.xml
+new file mode 100644
+--- /dev/null	(date 1726768324315)
++++ b/.idea/.idea.Reddit/.idea/shelf/Uncommitted_changes_before_Update_at_19_09_2024_19_51__Changes_.xml	(date 1726768324315)
+@@ -0,0 +1,4 @@
++<changelist name="Uncommitted_changes_before_Update_at_19_09_2024_19_51_[Changes]" date="1726768302034" recycled="false" toDelete="true">
++  <option name="PATH" value="$PROJECT_DIR$/.idea/.idea.Reddit/.idea/shelf/Uncommitted_changes_before_Update_at_19_09_2024_19_51_[Changes]/shelved.patch" />
++  <option name="DESCRIPTION" value="Uncommitted changes before Update at 19/09/2024 19:51 [Changes]" />
++</changelist>
+\ No newline at end of file
+Index: .idea/.idea.Reddit/.idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoGeneratedRunConfigurationManager\">\r\n    <projectFile>Main/Main.csproj</projectFile>\r\n    <projectFile>Reddit/Reddit.csproj</projectFile>\r\n    <projectFile>Server/CLI/CLI.csproj</projectFile>\r\n  </component>\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"1d97c9a1-2138-4b65-b1d5-194510053908\" name=\"Changes\" comment=\"\">\r\n      <change afterPath=\"$PROJECT_DIR$/Server/CLI/UI/CliApp.cs\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/Server/CLI/UI/LoginPage.cs\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/Server/CLI/UI/PostCreationPage.cs\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/Server/CLI/UI/ProfilePage.cs\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/Server/CLI/UI/SinglePostPage.cs\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/.idea.Reddit/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/.idea.Reddit/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Entities/Comment.cs\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Server/Entities/Comment.cs\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Entities/DomainModel.puml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Server/Entities/DomainModel.puml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Entities/Post.cs\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Server/Entities/Post.cs\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Entities/PostList.cs\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Entities/Program.cs\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Entities/User.cs\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Server/Entities/User.cs\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Reddit.sln\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Reddit.sln\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Server/InMemoryRepo/CommentInMemoryRepo.cs\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Server/InMemoryRepo/CommentInMemoryRepo.cs\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Server/InMemoryRepo/InMemoryRepo.csproj\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Server/InMemoryRepo/InMemoryRepo.csproj\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Server/InMemoryRepo/PostInMemoryRepo.cs\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Server/InMemoryRepo/PostInMemoryRepo.cs\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Server/InMemoryRepo/UserInMemoryRepo.cs\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Server/InMemoryRepo/UserInMemoryRepo.cs\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Server/RepositoryContracts/RepositoryContracts.csproj\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Server/RepositoryContracts/RepositoryContracts.csproj\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"DpaMonitoringSettings\">\r\n    <option name=\"autoShow\" value=\"false\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"UML Object\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"HighlightingSettingsPerFile\">\r\n    <setting file=\"file://$PROJECT_DIR$/Entities/Comment.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Entities/Post.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Entities/PostList.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Entities/Program.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Entities/User.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Reddit/Program.cs\" root0=\"SKIP_HIGHLIGHTING\" />\r\n  </component>\r\n  <component name=\"MetaFilesCheckinStateConfiguration\" checkMetaFiles=\"true\" />\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 1\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2lgoH33CYINJ6cB2R9DxOxPNs58\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \".NET Project.CLI.executor\": \"Run\",\r\n    \".NET Project.Main.executor\": \"Run\",\r\n    \"DefaultPlantUmlFileTemplate\": \"UML Object\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"node.js.detected.package.eslint\": \"true\",\r\n    \"node.js.detected.package.tslint\": \"true\",\r\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\r\n    \"nodejs_package_manager_path\": \"npm\",\r\n    \"settings.editor.selected.configurable\": \"preferences.keymap\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RunManager\" selected=\".NET Project.CLI\">\r\n    <configuration name=\"CLI\" type=\"DotNetProject\" factoryName=\".NET Project\">\r\n      <option name=\"EXE_PATH\" value=\"\" />\r\n      <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"\" />\r\n      <option name=\"PASS_PARENT_ENVS\" value=\"1\" />\r\n      <option name=\"USE_EXTERNAL_CONSOLE\" value=\"0\" />\r\n      <option name=\"USE_MONO\" value=\"0\" />\r\n      <option name=\"RUNTIME_ARGUMENTS\" value=\"\" />\r\n      <option name=\"PROJECT_PATH\" value=\"$PROJECT_DIR$/Server/CLI/CLI.csproj\" />\r\n      <option name=\"PROJECT_EXE_PATH_TRACKING\" value=\"1\" />\r\n      <option name=\"PROJECT_ARGUMENTS_TRACKING\" value=\"1\" />\r\n      <option name=\"PROJECT_WORKING_DIRECTORY_TRACKING\" value=\"1\" />\r\n      <option name=\"PROJECT_KIND\" value=\"DotNetCore\" />\r\n      <option name=\"PROJECT_TFM\" value=\"\" />\r\n      <method v=\"2\">\r\n        <option name=\"Build\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"Main\" type=\"DotNetProject\" factoryName=\".NET Project\">\r\n      <option name=\"EXE_PATH\" value=\"\" />\r\n      <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"\" />\r\n      <option name=\"PASS_PARENT_ENVS\" value=\"1\" />\r\n      <option name=\"USE_EXTERNAL_CONSOLE\" value=\"0\" />\r\n      <option name=\"USE_MONO\" value=\"0\" />\r\n      <option name=\"RUNTIME_ARGUMENTS\" value=\"\" />\r\n      <option name=\"PROJECT_PATH\" value=\"$PROJECT_DIR$/Entities/Entities.csproj\" />\r\n      <option name=\"PROJECT_EXE_PATH_TRACKING\" value=\"1\" />\r\n      <option name=\"PROJECT_ARGUMENTS_TRACKING\" value=\"1\" />\r\n      <option name=\"PROJECT_WORKING_DIRECTORY_TRACKING\" value=\"1\" />\r\n      <option name=\"PROJECT_KIND\" value=\"DotNetCore\" />\r\n      <option name=\"PROJECT_TFM\" value=\"\" />\r\n      <method v=\"2\">\r\n        <option name=\"Build\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"Reddit\" type=\"DotNetProject\" factoryName=\".NET Project\">\r\n      <option name=\"EXE_PATH\" value=\"\" />\r\n      <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"\" />\r\n      <option name=\"PASS_PARENT_ENVS\" value=\"1\" />\r\n      <option name=\"USE_EXTERNAL_CONSOLE\" value=\"0\" />\r\n      <option name=\"USE_MONO\" value=\"0\" />\r\n      <option name=\"RUNTIME_ARGUMENTS\" value=\"\" />\r\n      <option name=\"PROJECT_PATH\" value=\"$PROJECT_DIR$/Reddit/Reddit.csproj\" />\r\n      <option name=\"PROJECT_EXE_PATH_TRACKING\" value=\"1\" />\r\n      <option name=\"PROJECT_ARGUMENTS_TRACKING\" value=\"1\" />\r\n      <option name=\"PROJECT_WORKING_DIRECTORY_TRACKING\" value=\"1\" />\r\n      <option name=\"PROJECT_KIND\" value=\"DotNetCore\" />\r\n      <option name=\"PROJECT_TFM\" value=\"\" />\r\n      <method v=\"2\">\r\n        <option name=\"Build\" />\r\n      </method>\r\n    </configuration>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"1d97c9a1-2138-4b65-b1d5-194510053908\" name=\"Changes\" comment=\"\" />\r\n      <created>1725610988681</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1725610988681</updated>\r\n      <workItem from=\"1725610989949\" duration=\"43000\" />\r\n      <workItem from=\"1725622153046\" duration=\"8570000\" />\r\n      <workItem from=\"1725963594558\" duration=\"674000\" />\r\n      <workItem from=\"1725964288979\" duration=\"4929000\" />\r\n      <workItem from=\"1726078996935\" duration=\"1413000\" />\r\n      <workItem from=\"1726143788228\" duration=\"13000\" />\r\n      <workItem from=\"1726153882218\" duration=\"3958000\" />\r\n      <workItem from=\"1726208673676\" duration=\"263000\" />\r\n      <workItem from=\"1726654681768\" duration=\"12738000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"InitCommit\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1725963720613</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1725963720613</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Init2\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1725963832554</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1725963832554</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"Implemented memory Repos\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726157600295</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726157600295</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"4\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"UnityCheckinConfiguration\" checkUnsavedScenes=\"true\" />\r\n  <component name=\"UnityProjectConfiguration\" hasMinimizedUI=\"false\" />\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <option name=\"LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN\" value=\"false\" />\r\n    <option name=\"CLEAR_INITIAL_COMMIT_MESSAGE\" value=\"true\" />\r\n    <MESSAGE value=\"InitCommit\" />\r\n    <MESSAGE value=\"Init2\" />\r\n    <MESSAGE value=\"Implemented memory Repos\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Implemented memory Repos\" />\r\n  </component>\r\n  <component name=\"XSLT-Support.FileAssociations.UIState\">\r\n    <expand />\r\n    <select />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/.idea.Reddit/.idea/workspace.xml b/.idea/.idea.Reddit/.idea/workspace.xml
+--- a/.idea/.idea.Reddit/.idea/workspace.xml	(revision 8c9eaf9bb587f2c50ff8b87961b555552ca75ad2)
++++ b/.idea/.idea.Reddit/.idea/workspace.xml	(date 1726768569554)
+@@ -9,25 +9,12 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="1d97c9a1-2138-4b65-b1d5-194510053908" name="Changes" comment="">
+-      <change afterPath="$PROJECT_DIR$/Server/CLI/UI/CliApp.cs" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/Server/CLI/UI/LoginPage.cs" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/Server/CLI/UI/PostCreationPage.cs" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/Server/CLI/UI/ProfilePage.cs" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/Server/CLI/UI/SinglePostPage.cs" afterDir="false" />
++    <list default="true" id="1d97c9a1-2138-4b65-b1d5-194510053908" name="Changes" comment="Ope">
++      <change afterPath="$PROJECT_DIR$/.idea/.idea.Reddit/.idea/shelf/Uncommitted_changes_before_Update_at_19_09_2024_19_51_[Changes]/shelved.patch" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/.idea.Reddit/.idea/shelf/Uncommitted_changes_before_Update_at_19_09_2024_19_51__Changes_.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/.idea.Reddit/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Reddit/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Entities/Comment.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Entities/Comment.cs" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Entities/DomainModel.puml" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Entities/DomainModel.puml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Entities/Post.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Entities/Post.cs" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Entities/PostList.cs" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Entities/Program.cs" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Entities/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Entities/User.cs" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Reddit.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Reddit.sln" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Server/InMemoryRepo/CommentInMemoryRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/InMemoryRepo/CommentInMemoryRepo.cs" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Server/InMemoryRepo/InMemoryRepo.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Server/InMemoryRepo/InMemoryRepo.csproj" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Server/InMemoryRepo/PostInMemoryRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/InMemoryRepo/PostInMemoryRepo.cs" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Server/InMemoryRepo/UserInMemoryRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/InMemoryRepo/UserInMemoryRepo.cs" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Server/RepositoryContracts/RepositoryContracts.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Server/RepositoryContracts/RepositoryContracts.csproj" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/Entities/DomainModel.puml" beforeDir="false" afterPath="$PROJECT_DIR$/Entities/DomainModel.puml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/Server/Entities/DomainModel.puml" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Entities/DomainModel.puml" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -65,21 +52,21 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    ".NET Project.CLI.executor": "Run",
+-    ".NET Project.Main.executor": "Run",
+-    "DefaultPlantUmlFileTemplate": "UML Object",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "node.js.detected.package.eslint": "true",
+-    "node.js.detected.package.tslint": "true",
+-    "node.js.selected.package.eslint": "(autodetect)",
+-    "node.js.selected.package.tslint": "(autodetect)",
+-    "nodejs_package_manager_path": "npm",
+-    "settings.editor.selected.configurable": "preferences.keymap",
+-    "vue.rearranger.settings.migration": "true"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;.NET Project.CLI.executor&quot;: &quot;Run&quot;,
++    &quot;.NET Project.Main.executor&quot;: &quot;Run&quot;,
++    &quot;DefaultPlantUmlFileTemplate&quot;: &quot;UML Object&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
++    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
++    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
++    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
++    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
++    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+   }
+-}]]></component>
++}</component>
+   <component name="RunManager" selected=".NET Project.CLI">
+     <configuration name="CLI" type="DotNetProject" factoryName=".NET Project">
+       <option name="EXE_PATH" value="" />
+@@ -203,7 +190,8 @@
+     <MESSAGE value="InitCommit" />
+     <MESSAGE value="Init2" />
+     <MESSAGE value="Implemented memory Repos" />
+-    <option name="LAST_COMMIT_MESSAGE" value="Implemented memory Repos" />
++    <MESSAGE value="Ope" />
++    <option name="LAST_COMMIT_MESSAGE" value="Ope" />
+   </component>
+   <component name="XSLT-Support.FileAssociations.UIState">
+     <expand />
