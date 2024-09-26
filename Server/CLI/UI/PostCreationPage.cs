@@ -1,11 +1,11 @@
-using InMemoryRepo;
 using Main;
+using RepositoryContracts;
 
 namespace CLI.UI;
 
 public class PostCreationPage {
-    private PostInMemoryRepo _postInMemoryRepo;
-    public PostCreationPage(PostInMemoryRepo postInMemoryRepo) {
+    private IPostRepo _postInMemoryRepo;
+    public PostCreationPage(IPostRepo postInMemoryRepo) {
         _postInMemoryRepo = postInMemoryRepo;
     }
     public void ShowCreation(int thisUserId) {

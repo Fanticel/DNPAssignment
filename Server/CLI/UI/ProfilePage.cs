@@ -1,10 +1,10 @@
-using InMemoryRepo;
+using RepositoryContracts;
 
 namespace CLI.UI;
 
 public class ProfilePage {
-    private UserInMemoryRepo _userInMemoryRepo;
-    public ProfilePage(UserInMemoryRepo userInMemoryRepo) {
+    private IUserRepo _userInMemoryRepo;
+    public ProfilePage(IUserRepo userInMemoryRepo) {
         _userInMemoryRepo = userInMemoryRepo;
     }
     public void ShowProfile(int thisUserId) {

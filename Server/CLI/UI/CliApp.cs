@@ -1,19 +1,19 @@
-using InMemoryRepo;
 using Main;
+using RepositoryContracts;
 
 namespace CLI.UI;
 
 public class CliApp {
-    private PostInMemoryRepo _postInMemoryRepo;
-    private CommentInMemoryRepo _commentInMemoryRepo;
-    private UserInMemoryRepo _userInMemoryRepo;
+    private IPostRepo _postInMemoryRepo;
+    private ICommentRepo _commentInMemoryRepo;
+    private IUserRepo _userInMemoryRepo;
     private LoginPage _loginPage;
     private SinglePostPage _singlePostPage;
     private ProfilePage _profilePage;
     private PostCreationPage _postCreationPage;
     private int thisUserId;
     private bool running;
-    public CliApp(PostInMemoryRepo postInMemoryRepo, CommentInMemoryRepo commentInMemoryRepo, UserInMemoryRepo userInMemoryRepo) {
+    public CliApp(IPostRepo postInMemoryRepo, ICommentRepo commentInMemoryRepo, IUserRepo userInMemoryRepo) {
         _postInMemoryRepo = postInMemoryRepo;
         _commentInMemoryRepo = commentInMemoryRepo;
         _userInMemoryRepo = userInMemoryRepo;
@@ -39,7 +39,7 @@ public class CliApp {
         string ans = "";
         ans += ("| Home page |\n_____________");
         foreach (Post p in _postInMemoryRepo.GetMany()) {
-            ans += ($"\n| Id : {p.PostId} |\n| {_userInMemoryRepo.GetSingleAsync(p.posterId).Result.UserName} |\n| {p.PostTitle} |\n| {p.Likes} : {p.Dislikes} |\n_________");
+            ans += ($"\n| Id : {p.PostId} |\n| {_userInMemoryRepo.GetSingleAsync(p.PosterId).Result.UserName} |\n| {p.PostTitle} |\n| {p.Likes} : {p.Dislikes} |\n_________");
         }
         return ans;
     }
@@ -47,9 +47,9 @@ public class CliApp {
         string[] ans = resp.Split(";");
         switch (ans[0]) {
             case "1":
-                _singlePostPage.ShowFullPost(_postInMemoryRepo.GetSingleAsync(int.Parse(ans[1])).Result);
+                _postInMemoryRepo.UpdateAsync(_singlePostPage.ShowFullPost(_postInMemoryRepo.GetSingleAsync(int.Parse(ans[1])).Result));
                 break;
-            case "2":
+            case "2": 
                 _postCreationPage.ShowCreation(thisUserId);
                 break;
             case "3":

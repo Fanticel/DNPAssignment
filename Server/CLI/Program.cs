@@ -1,14 +1,12 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using CLI.UI;
-using InMemoryRepo;
+using FileMemoryRepo;
+using RepositoryContracts;
 
-CommentInMemoryRepo commentInMemoryRepo = new CommentInMemoryRepo();
-PostInMemoryRepo postInMemoryRepo = new PostInMemoryRepo();
-UserInMemoryRepo userInMemoryRepo = new UserInMemoryRepo();
-userInMemoryRepo.CreateDummy();
-commentInMemoryRepo.CreateDummy();
-postInMemoryRepo.CreateDummy();
+IUserRepo userInMemoryRepo = new UserInFileRepo();
+ICommentRepo commentInMemoryRepo = new CommentInFileRepo();
+IPostRepo postInMemoryRepo = new PostInFileRepo();
 
 CliApp cliApp = new CliApp(postInMemoryRepo, commentInMemoryRepo, userInMemoryRepo);
 cliApp.StartAsync();

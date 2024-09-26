@@ -1,29 +1,29 @@
-using InMemoryRepo;
 using Main;
+using RepositoryContracts;
 
 namespace CLI.UI;
 
 public class SinglePostPage {
-    private CommentInMemoryRepo _commentInMemoryRepo;
-    private UserInMemoryRepo _userInMemoryRepo;
+    private ICommentRepo _commentInMemoryRepo;
+    private IUserRepo _userInMemoryRepo;
     private int _localUser;
     private bool running;
-    public SinglePostPage(CommentInMemoryRepo commentInMemoryRepo, UserInMemoryRepo userInMemoryRepo, int localUser) {
+    public SinglePostPage(ICommentRepo commentInMemoryRepo, IUserRepo userInMemoryRepo, int localUser) {
         _commentInMemoryRepo = commentInMemoryRepo;
         _userInMemoryRepo = userInMemoryRepo;
         _localUser = localUser;
     }
-    public void ShowFullPost(Post viewedPost) {
+    public Post ShowFullPost(Post viewedPost) {
         running = true;
         while (running) {
-            Console.WriteLine($"Op : {_userInMemoryRepo.GetSingleAsync(viewedPost.posterId).Result.UserName}\n" +
+            Console.WriteLine($"Op : {_userInMemoryRepo.GetSingleAsync(viewedPost.PosterId).Result.UserName}\n" +
                               $"\tPost title : \t{viewedPost.PostTitle}\n" +
                               $"\t\tPost body : \t{viewedPost.PostBody}\n\n" +
                               $"Up : {viewedPost.Likes} | Down : {viewedPost.Dislikes}\n" +
                               $"Comments: ");
             foreach (int x in viewedPost.CommentIds) {
                 Comment c = _commentInMemoryRepo.GetSingleAsync(x).Result;
-                Console.WriteLine($"\t\t{_userInMemoryRepo.GetSingleAsync(c.getPoster()).Result.UserName} says " +
+                Console.WriteLine($"\t\t{_userInMemoryRepo.GetSingleAsync(c.PosterId).Result.UserName} says " +
                                   $"\"{c.CommentBody}\"");
             }
             Console.WriteLine("Like post : 1\n" +
@@ -32,6 +32,7 @@ public class SinglePostPage {
                               "Go back to homepage : 4");
             HandleResponse(Console.ReadLine(), viewedPost);
         }
+        return viewedPost;
     }
     public void HandleResponse(string? response, Post viewedPost) {
         switch (response) {

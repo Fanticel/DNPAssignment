@@ -1,11 +1,11 @@
-using InMemoryRepo;
 using Main;
+using RepositoryContracts;
 
 namespace CLI.UI;
 
 public class LoginPage {
-    private UserInMemoryRepo userInMemoryRepo;
-    public LoginPage(UserInMemoryRepo userInMemoryRepo) {
+    private IUserRepo userInMemoryRepo;
+    public LoginPage(IUserRepo userInMemoryRepo) {
         this.userInMemoryRepo = userInMemoryRepo;
     }
     public int HandleLoginBegin() {

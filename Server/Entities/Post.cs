@@ -5,7 +5,7 @@ public class Post {
     public int Likes { get; set; }
     public int Dislikes { get; set; }
     public int PostId { get; set; }
-    public int posterId;
+    public int PosterId { get; set; }
     public List<int> CommentIds { get; set; }
     public string PostTitle { get; set; }
     public string PostBody { get; set; }
@@ -13,7 +13,7 @@ public class Post {
     public Post(int posterId, string postTitle, string postBody) {
         Likes = 0;
         Dislikes = 0;
-        this.posterId = posterId;
+        PosterId = posterId;
         PostTitle = postTitle;
         PostBody = postBody;
         CommentIds = new List<int>();
@@ -27,5 +27,8 @@ public class Post {
     }
     public void Dislike() {
         Dislikes++;
+    }
+    public override string ToString() {
+        return PostTitle;
     }
 }
