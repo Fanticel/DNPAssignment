@@ -29,6 +29,6 @@ public class Post {
         Dislikes++;
     }
     public override string ToString() {
-        return PostTitle;
+        return $"{PostTitle}, {PostBody}, {PosterId}";
     }
 }

@@ -9,6 +9,7 @@ public class UserInFileRepo : IUserRepo {
     public UserInFileRepo() {
         if (!File.Exists(_filePath)) {
             File.WriteAllText(_filePath, "[]");
+            CreateDummy();
         }
     }
     public async Task<User> AddAsync(User user) {

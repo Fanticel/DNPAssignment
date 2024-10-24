@@ -10,6 +10,7 @@ public class CommentInFileRepo : ICommentRepo {
     public CommentInFileRepo() {
         if (!File.Exists(_filePath)) {
             File.WriteAllText(_filePath, "[]");
+            CreateDummy();
         }
     }
 
@@ -50,11 +51,11 @@ public class CommentInFileRepo : ICommentRepo {
     public IQueryable<Comment> GetMany() {
         return JsonSerializer.Deserialize<List<Comment>>(File.ReadAllTextAsync(_filePath).Result)!.AsQueryable();
     }
-    // public async void CreateDummy() {
-    //     await AddAsync(new Comment(1, "Very cool"));
-    //     await AddAsync(new Comment(2, "You suck"));
-    //     await AddAsync(new Comment(1, "Pog"));
-    //     await AddAsync(new Comment(3, "AY dios mio"));
-    //     await AddAsync(new Comment(3, "Very cool"));
-    // }
+    public async void CreateDummy() {
+        await AddAsync(new Comment(1, "Very cool"));
+        await AddAsync(new Comment(2, "You suck"));
+        await AddAsync(new Comment(1, "Pog"));
+        await AddAsync(new Comment(3, "AY dios mio"));
+        await AddAsync(new Comment(3, "Very cool"));
+    }
 }

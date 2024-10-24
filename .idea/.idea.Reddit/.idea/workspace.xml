@@ -12,20 +12,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d97c9a1-2138-4b65-b1d5-194510053908" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/DTOs/CreateUserDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DTOs/PostGeneralDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DTOs/PostSpecificDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DTOs/UpdateUserDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DTOs/UserDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/MeaningfulName/Controllers/PostsController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/MeaningfulName/Controllers/UsersController.cs" afterDir="false" />
+    <list default="true" id="1d97c9a1-2138-4b65-b1d5-194510053908" name="Changes" comment="WebAPI update">
+      <change afterPath="$PROJECT_DIR$/DTOs/CommentDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DTOs/CreateCommentDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DTOs/CreatePostDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DTOs/UpdatePostDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server/MeaningfulName/Controllers/CommentController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Reddit/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Reddit/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Reddit.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Reddit.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/InMemoryRepo/CommentInMemoryRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/LEGACYInMemoryRepo/CommentInMemoryRepo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/InMemoryRepo/InMemoryRepo.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Server/LEGACYInMemoryRepo/LEGACYInMemoryRepo.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/InMemoryRepo/PostInMemoryRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/LEGACYInMemoryRepo/PostInMemoryRepo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/InMemoryRepo/UserInMemoryRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/LEGACYInMemoryRepo/UserInMemoryRepo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DTOs/PostGeneralDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/PostGeneralDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DTOs/PostSpecificDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/PostSpecificDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/Entities/Post.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Entities/Post.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/FileMemoryRepo/CommentInFileRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/FileMemoryRepo/CommentInFileRepo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/FileMemoryRepo/PostInFileRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/FileMemoryRepo/PostInFileRepo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/FileMemoryRepo/UserInFileRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/FileMemoryRepo/UserInFileRepo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/MeaningfulName/Controllers/PostsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/MeaningfulName/Controllers/PostsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/MeaningfulName/PostFile.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/MeaningfulName/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/MeaningfulName/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/MeaningfulName/UserFile.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -201,7 +204,7 @@
       <workItem from="1729589132832" duration="371000" />
       <workItem from="1729589786426" duration="1182000" />
       <workItem from="1729750430868" duration="988000" />
-      <workItem from="1729751476348" duration="8364000" />
+      <workItem from="1729751476348" duration="18257000" />
     </task>
     <task id="LOCAL-00001" summary="InitCommit">
       <option name="closed" value="true" />
@@ -235,7 +238,15 @@
       <option name="project" value="LOCAL" />
       <updated>1727374531234</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="WebAPI update">
+      <option name="closed" value="true" />
+      <created>1729760280315</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1729760280315</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -261,7 +272,8 @@
     <MESSAGE value="Init2" />
     <MESSAGE value="Implemented memory Repos" />
     <MESSAGE value="Json memory implemented" />
-    <option name="LAST_COMMIT_MESSAGE" value="Json memory implemented" />
+    <MESSAGE value="WebAPI update" />
+    <option name="LAST_COMMIT_MESSAGE" value="WebAPI update" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
