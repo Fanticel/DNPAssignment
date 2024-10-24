@@ -4,26 +4,28 @@
     <projectFile>Main/Main.csproj</projectFile>
     <projectFile>Reddit/Reddit.csproj</projectFile>
     <projectFile>Server/CLI/CLI.csproj</projectFile>
+    <projectFile profileName="IIS Express">Server/MeaningfulName/MeaningfulName.csproj</projectFile>
+    <projectFile profileName="http">Server/MeaningfulName/MeaningfulName.csproj</projectFile>
+    <projectFile profileName="https">Server/MeaningfulName/MeaningfulName.csproj</projectFile>
   </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1d97c9a1-2138-4b65-b1d5-194510053908" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Server/FileMemoryRepo/CommentInFileRepo.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/FileMemoryRepo/PostInFileRepo.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/FileMemoryRepo/UserInFileRepo.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DTOs/CreateUserDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DTOs/PostGeneralDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DTOs/PostSpecificDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DTOs/UpdateUserDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DTOs/UserDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server/MeaningfulName/Controllers/PostsController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server/MeaningfulName/Controllers/UsersController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Reddit/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Reddit/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Reddit.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Reddit.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/CLI/CLI.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Server/CLI/CLI.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/CLI/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/CLI/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/CLI/UI/CliApp.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/CLI/UI/CliApp.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/CLI/UI/LoginPage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/CLI/UI/LoginPage.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/CLI/UI/PostCreationPage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/CLI/UI/PostCreationPage.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/CLI/UI/ProfilePage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/CLI/UI/ProfilePage.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/CLI/UI/SinglePostPage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/CLI/UI/SinglePostPage.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/Entities/Comment.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Entities/Comment.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/Entities/Post.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Entities/Post.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/InMemoryRepo/CommentInMemoryRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/LEGACYInMemoryRepo/CommentInMemoryRepo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/InMemoryRepo/InMemoryRepo.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Server/LEGACYInMemoryRepo/LEGACYInMemoryRepo.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/InMemoryRepo/PostInMemoryRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/LEGACYInMemoryRepo/PostInMemoryRepo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/InMemoryRepo/UserInMemoryRepo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/LEGACYInMemoryRepo/UserInMemoryRepo.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,6 +65,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.MeaningfulName: http.executor&quot;: &quot;Run&quot;,
     &quot;.NET Project.CLI.executor&quot;: &quot;Run&quot;,
     &quot;.NET Project.Main.executor&quot;: &quot;Run&quot;,
     &quot;DefaultPlantUmlFileTemplate&quot;: &quot;UML Object&quot;,
@@ -76,7 +79,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected=".NET Project.CLI">
+  <component name="RunManager" selected=".NET Launch Settings Profile.MeaningfulName: http">
     <configuration name="CLI" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -131,6 +134,51 @@
         <option name="Build" />
       </method>
     </configuration>
+    <configuration name="MeaningfulName: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
+      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Server/MeaningfulName/MeaningfulName.csproj" />
+      <option name="LAUNCH_PROFILE_TFM" value="net8.0" />
+      <option name="LAUNCH_PROFILE_NAME" value="IIS Express" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
+      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
+      <option name="SEND_DEBUG_REQUEST" value="1" />
+      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
+    <configuration name="MeaningfulName: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
+      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Server/MeaningfulName/MeaningfulName.csproj" />
+      <option name="LAUNCH_PROFILE_TFM" value="net8.0" />
+      <option name="LAUNCH_PROFILE_NAME" value="http" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
+      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
+      <option name="SEND_DEBUG_REQUEST" value="1" />
+      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
+    <configuration name="MeaningfulName: https" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
+      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Server/MeaningfulName/MeaningfulName.csproj" />
+      <option name="LAUNCH_PROFILE_TFM" value="net8.0" />
+      <option name="LAUNCH_PROFILE_NAME" value="https" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
+      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
+      <option name="SEND_DEBUG_REQUEST" value="1" />
+      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -149,7 +197,11 @@
       <workItem from="1726153882218" duration="3726000" />
       <workItem from="1727331498078" duration="70000" />
       <workItem from="1727331701105" duration="3648000" />
-      <workItem from="1727374172307" duration="215000" />
+      <workItem from="1727374172307" duration="480000" />
+      <workItem from="1729589132832" duration="371000" />
+      <workItem from="1729589786426" duration="1182000" />
+      <workItem from="1729750430868" duration="988000" />
+      <workItem from="1729751476348" duration="8364000" />
     </task>
     <task id="LOCAL-00001" summary="InitCommit">
       <option name="closed" value="true" />
@@ -175,7 +227,15 @@
       <option name="project" value="LOCAL" />
       <updated>1726157600295</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Json memory implemented">
+      <option name="closed" value="true" />
+      <created>1727374531234</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1727374531234</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -200,7 +260,8 @@
     <MESSAGE value="InitCommit" />
     <MESSAGE value="Init2" />
     <MESSAGE value="Implemented memory Repos" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implemented memory Repos" />
+    <MESSAGE value="Json memory implemented" />
+    <option name="LAST_COMMIT_MESSAGE" value="Json memory implemented" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

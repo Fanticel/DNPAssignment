@@ -1,0 +1,6 @@
+@MeaningfulName_HostAddress = http://localhost:5155
+
+GET {{MeaningfulName_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
