@@ -1,4 +1,5 @@
 @page "/post"
+@using System.Security.Claims
 @using Client.Services
 @using DTOs
 @inject IPostService PostService
@@ -8,27 +9,29 @@
 
 <h1>Create a post</h1>
 
-<EditForm Model="@createPostDto" OnSubmit="HandleSubmit">
-    <div class="form-group row p-3">
-        <label for="name" class="col-1">
-            Title
-        </label>
-        <div class="col-3">
-            <InputText id="name" class="form-control" @bind-Value="createPostDto.PostTitle"/>
+<div class="content-box">
+    <EditForm Model="@createPostDto" OnSubmit="HandleSubmit">
+        <div class="form-group row p-3">
+            <label for="name" class="col-1">
+                Title
+            </label>
+            <div class="col-3">
+                <InputText id="name" class="form-control break" @bind-Value="createPostDto.PostTitle"/>
+            </div>
         </div>
-    </div>
-    <div class="form-group row p-3">
-        <label for="body" class="col-1">
-            Body
-        </label>
-        <div class="col-9">
-            <textarea id="body" class="form-control" rows="10" @bind="createPostDto.PostBody"></textarea>
+        <div class="form-group row p-3">
+            <label for="body" class="col-1">
+                Body
+            </label>
+            <div class="col-9">
+                <textarea id="body" class="form-control break" rows="10" @bind="createPostDto.PostBody"></textarea>
+            </div>
         </div>
-    </div>
-    <div class="form-group p-3">
-        <button type="submit" class="btn btn-primary">Post</button>
-    </div> 
-</EditForm>
+        <div class="form-group p-3">
+            <button type="submit" class="btn btn-primary">Post</button>
+        </div>
+    </EditForm>
+</div>
 @if (success)
 {
     <div class="alert alert-success">
@@ -43,12 +46,14 @@
 }
 
 @code {
+    [CascadingParameter] public Task<AuthenticationState> State { get; set; }  
     private CreatePostDto createPostDto = new CreatePostDto();
     private bool success = false;
+    private int userId;
     private String? errorMessage;
     private async Task HandleSubmit() {
         try {
-            createPostDto.PosterId = 1;
+            createPostDto.PosterId = userId;
             await PostService.CreatePostAsync(createPostDto);
             success = true;
             errorMessage = null;
@@ -58,5 +63,18 @@
             success = false;
             errorMessage = e.Message;
         }
+    }
+    protected override async Task OnInitializedAsync() {
+        AuthenticationState authenticationState = await State;
+        ClaimsPrincipal claimsPrincipal = authenticationState.User;
+        if(claimsPrincipal.Identity is null || !claimsPrincipal.Identity.IsAuthenticated)
+        {
+            // the user is not logged in
+            return;
+        }
+        string? userName = claimsPrincipal.Identity?.Name;
+        IEnumerable<Claim> claims = claimsPrincipal.Claims;
+        string userIdAsString = claims.Single(c => c.Type == "Id").Value;
+        userId = int.Parse(userIdAsString);
     }
 }

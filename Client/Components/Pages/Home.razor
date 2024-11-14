@@ -3,29 +3,43 @@
 @using DTOs
 @inject IPostService PostService;
 @rendermode InteractiveServer
+@inject NavigationManager navMgr
 
 <body class="dark-mode">
 <PageTitle>Home</PageTitle>
-<h1>Home</h1>
-@if (postList.Count == 0) {
-    <div class="alert alert-danger">
-        <h3>No content has been found</h3>
-        <p>Please refresh the page</p>
-    </div>
-}
-else {
-    @foreach (PostGeneralDto post in postList) {
-        <NavLink href="@getToPost(post.PostId)">
-            <div class="content-box">
-                <h3>@post.PostTitle</h3>
-                @for (int i = 0; i < 70 && i < post.PostBody.Length; i++) {
-                    <span style="opacity:@getOpacity(i);">@post.PostBody[i]</span>
-                }
-                <span style="opacity:@getOpacity(72);">...</span>
+<AuthorizeView>
+    <Authorized>
+        <h1>Home</h1>
+        @if (postList == null) {
+            <div class="alert alert-danger">
+                <h1>Loading...</h1>
             </div>
-        </NavLink>
-    }
-}
+        }
+        else if (postList.Count == 0) {
+            <div class="alert alert-danger">
+                <h3>No content has been found</h3>
+                <p>Please refresh the page</p>
+            </div>
+        }
+        else {
+            foreach (PostGeneralDto post in postList) {
+                <NavLink href="@getToPost(post.PostId)">
+                    <div class="content-box">
+                        <h3>@post.PostTitle</h3>
+                        @for (int i = 0; i < 70 && i < post.PostBody.Length; i++) {
+                            <span style="opacity:@getOpacity(i);">@post.PostBody[i]</span>
+                        }
+                        <span style="opacity:@getOpacity(72);">...</span>
+                    </div>
+                </NavLink>
+            }
+        }
+    </Authorized>
+    <NotAuthorized>
+        Hihi you are not logged in :)
+        <button class="btn btn-outline-info" @onclick='() => navMgr.NavigateTo("/login")'>go to login</button>
+    </NotAuthorized>
+</AuthorizeView>
 </body>
 
 @code {

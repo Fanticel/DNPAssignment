@@ -1,4 +1,5 @@
 @page "/posts/{Id}"
+@using System.Security.Claims
 @using Client.Services
 @using DTOs
 @inject NavigationManager UriHelper
@@ -34,7 +35,7 @@
     <EditForm Model="@potentialComment" OnSubmit="HandleComment">
         <div class="row">
             <div class="col-8">
-                <InputText class="form-control" @bind-Value="potentialComment.CommentBody"/>
+                <InputText class="form-control break" @bind-Value="potentialComment.CommentBody"/>
             </div>
             <div class="col-2">
                 <button type="submit" class="btn btn-primary">Send</button>
@@ -53,8 +54,9 @@
 </body>
 
 @code{
-    [Parameter]
-    public string Id {get; set;}
+    [Parameter] public string Id {get; set;}
+    [CascadingParameter] public Task<AuthenticationState> State { get; set; }
+    private int userId;
 
     public CreateCommentDto potentialComment = new() {
         PosterId = 1, 
@@ -67,8 +69,20 @@
     protected override async Task OnInitializedAsync() {
         postDTO = await PostService.GetSinglePost(int.Parse(Id));
         commentsDTO = postDTO.Comments;
+        AuthenticationState authenticationState = await State;
+        ClaimsPrincipal claimsPrincipal = authenticationState.User;
+        if(claimsPrincipal.Identity is null || !claimsPrincipal.Identity.IsAuthenticated)
+        {
+            // the user is not logged in
+            return;
+        }
+        string? userName = claimsPrincipal.Identity?.Name;
+        IEnumerable<Claim> claims = claimsPrincipal.Claims;
+        string userIdAsString = claims.Single(c => c.Type == "Id").Value;
+        userId = int.Parse(userIdAsString);
     }
     private async void HandleComment() {
+        potentialComment.PosterId = userId;
         CommentDto actualComment = await CommentService.CreateComment(potentialComment);
         List<int> commentIds = new();
         foreach (CommentDto dto in commentsDTO) {

@@ -1,0 +1,62 @@
+@page "/login"
+@using Client.Auth
+@using DTOs
+@* @using Microsoft.AspNetCore.Components.Authorization *@
+@* @using Microsoft.AspNetCore.Components.Forms *@
+@inject AuthenticationStateProvider AuthProvider
+@inject NavigationManager navMgr
+@rendermode InteractiveServer
+
+<body class="dark-mode">
+<AuthorizeView>
+    <NotAuthorized>
+        <div class="form-group row p-3">
+            <label for="username" class="col-2">
+                Username
+            </label>
+            <div class="col-8">
+                <input id="username" class="form-control break" @bind="request.Username"/>
+            </div>
+        </div>
+        <div class="form-group row p-3">
+            <label for="password" class="col-2">
+                Password
+            </label>
+            <div class="col-8">
+                <input id="password" class="form-control break" type="password" @bind="request.Password"/>
+            </div>
+        </div>
+        <div class="form-group p-3">
+            <button class="btn btn-primary" @onclick="LoginAsync">Login</button>
+        </div>
+        @if (!string.IsNullOrEmpty(errorMessage)) {
+            <div class="alert alert-danger">
+                @errorMessage
+            </div>
+        }
+    </NotAuthorized>
+    <Authorized>
+        <h3>Hello, @context.User.Identity.Name</h3>
+    </Authorized>
+</AuthorizeView>
+</body>
+
+@code {
+    private LoginRequestDto request = new() {
+        Username = "",
+        Password = ""
+    };
+    private string errorMessage = "";
+    private async Task LoginAsync() {
+        Console.WriteLine("tried");
+        errorMessage = "";
+        try {
+            await ((SimpleAuthProvider)AuthProvider).Login(request);
+            navMgr.NavigateTo("/");
+        }
+        catch (Exception e) {
+            Console.WriteLine(e);
+            errorMessage = e.Message;
+        }
+    }
+}

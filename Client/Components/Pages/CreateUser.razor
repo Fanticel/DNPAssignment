@@ -7,39 +7,41 @@
 <PageTitle>User</PageTitle>
 
 <h1>Create a user</h1>
-<EditForm Model="@user" OnSubmit="HandleSubmit">
-    <div class="form-group row p-3">
-        <label for="username" class="col-2">
-            Username
-        </label>
-        <div class="col-8">
-            <InputText id="username" class="form-control" @bind-Value="user.UserName"/>
+<div class="content-box">
+    <EditForm Model="@user" OnSubmit="HandleSubmit">
+        <div class="form-group row p-3">
+            <label for="username" class="col-2">
+                Username
+            </label>
+            <div class="col-8">
+                <InputText id="username" class="form-control break" @bind-Value="user.UserName"/>
+            </div>
         </div>
-    </div>
-    <div class="form-group row p-3">
-        <label for="password" class="col-2">
-            Password
-        </label>
-        <div class="col-8">
-            <InputText id="password" class="form-control" type="password" @bind-Value="user.Password"/>
+        <div class="form-group row p-3">
+            <label for="password" class="col-2">
+                Password
+            </label>
+            <div class="col-8">
+                <InputText id="password" class="form-control break" type="password" @bind-Value="user.Password"/>
+            </div>
         </div>
-    </div>
-    <div class="form-group p-3">
-        <button type="submit" class="btn btn-primary">Create user</button>
-    </div>
-</EditForm>
-@if (success)
-{
+        <div class="form-group p-3">
+            <button type="submit" class="btn btn-primary">Create user</button>
+        </div>
+    </EditForm>
+    @if (success)
+    {
     <div class="alert alert-success">
         User created successfully!
     </div>
-}
-@if (errorMessage is not null)
-{
+    }
+    @if (errorMessage is not null)
+    {
     <div class="alert alert-danger">
         @errorMessage
     </div>
-}
+    }
+</div>
 
 @code {
     private CreateUserDto user = new() {
