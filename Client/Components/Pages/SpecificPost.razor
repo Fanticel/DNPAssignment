@@ -1,0 +1,87 @@
+@page "/posts/{Id}"
+@using Client.Services
+@using DTOs
+@inject NavigationManager UriHelper
+@inject ICommentService CommentService
+@inject IPostService PostService
+@rendermode InteractiveServer
+
+<body class="dark-mode">
+<PageTitle>Home</PageTitle>
+<h1>@postDTO.PostTitle</h1>
+<div class="content-box">
+    <h2>@postDTO.PosterName</h2>
+    <h3>@postDTO.PostBody</h3>
+    <div class="row">
+        <div class="col-1">
+            <p>Likes</p>
+        </div>
+        <div class="col-1">
+            <p>@postDTO.Likes</p>
+        </div>
+        <div class="col-1">
+            <p>Dislikes</p>
+        </div>
+        <div class="col-1">
+            <p>@postDTO.Dislikes</p>
+        </div>
+    </div>
+</div>
+<div class="row content-box">
+    <div class="col-5">
+        <h4>Leave a comment!</h4>
+    </div>
+    <EditForm Model="@potentialComment" OnSubmit="HandleComment">
+        <div class="row">
+            <div class="col-8">
+                <InputText class="form-control" @bind-Value="potentialComment.CommentBody"/>
+            </div>
+            <div class="col-2">
+                <button type="submit" class="btn btn-primary">Send</button>
+            </div>
+        </div>
+    </EditForm>
+</div>
+@if(commentsDTO.Count > 0) {
+    @foreach(CommentDto commentDto in commentsDTO) {
+        <div class="row content-box">
+            <h5S>@commentDto.PosterName</h5S>
+            <p>@commentDto.CommentBody</p>
+        </div>
+    }
+}
+</body>
+
+@code{
+    [Parameter]
+    public string Id {get; set;}
+
+    public CreateCommentDto potentialComment = new() {
+        PosterId = 1, 
+        CommentBody = ""
+    };
+
+    private PostSpecificDto postDTO = new();
+    private List<CommentDto> commentsDTO = new();
+    
+    protected override async Task OnInitializedAsync() {
+        postDTO = await PostService.GetSinglePost(int.Parse(Id));
+        commentsDTO = postDTO.Comments;
+    }
+    private async void HandleComment() {
+        CommentDto actualComment = await CommentService.CreateComment(potentialComment);
+        List<int> commentIds = new();
+        foreach (CommentDto dto in commentsDTO) {
+            commentIds.Add(dto.Id);
+        }
+        commentIds.Add(actualComment.Id);
+        UpdatePostDto updatePostDto = new() {
+            PostTitle = postDTO.PostTitle,
+            PostBody = postDTO.PostBody,
+            PosterId = postDTO.PosterId,
+            Comments = commentIds
+        };
+        await PostService.UpdatePost(int.Parse(Id), updatePostDto);
+        UriHelper.NavigateTo(UriHelper.Uri, true);
+    }
+}

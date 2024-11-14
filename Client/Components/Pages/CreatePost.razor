@@ -1,0 +1,62 @@
+@page "/post"
+@using Client.Services
+@using DTOs
+@inject IPostService PostService
+@rendermode InteractiveServer
+
+<PageTitle>Post</PageTitle>
+
+<h1>Create a post</h1>
+
+<EditForm Model="@createPostDto" OnSubmit="HandleSubmit">
+    <div class="form-group row p-3">
+        <label for="name" class="col-1">
+            Title
+        </label>
+        <div class="col-3">
+            <InputText id="name" class="form-control" @bind-Value="createPostDto.PostTitle"/>
+        </div>
+    </div>
+    <div class="form-group row p-3">
+        <label for="body" class="col-1">
+            Body
+        </label>
+        <div class="col-9">
+            <textarea id="body" class="form-control" rows="10" @bind="createPostDto.PostBody"></textarea>
+        </div>
+    </div>
+    <div class="form-group p-3">
+        <button type="submit" class="btn btn-primary">Post</button>
+    </div> 
+</EditForm>
+@if (success)
+{
+    <div class="alert alert-success">
+        Post created successfully!
+    </div>
+}
+@if (errorMessage is not null)
+{
+    <div class="alert alert-danger">
+        @errorMessage
+    </div>
+}
+
+@code {
+    private CreatePostDto createPostDto = new CreatePostDto();
+    private bool success = false;
+    private String? errorMessage;
+    private async Task HandleSubmit() {
+        try {
+            createPostDto.PosterId = 1;
+            await PostService.CreatePostAsync(createPostDto);
+            success = true;
+            errorMessage = null;
+        }
+        catch (Exception e) {
+            Console.WriteLine(e);
+            success = false;
+            errorMessage = e.Message;
+        }
+    }
+}

@@ -16,7 +16,10 @@ public class UsersController : ControllerBase {
     public async Task<ActionResult<UserDto>> CreateUser([FromBody] CreateUserDto req) {
         if (UserValid(req.UserName)) {
             User created = await _userRepo.AddAsync(new User(req.UserName, req.Password));
-            UserDto userDto = new(created);
+            UserDto userDto = new() {
+                Id = created.Id,
+                UserName = created.UserName
+            };
             return Created($"/Users/{userDto.Id}", userDto);
         }
 
@@ -26,7 +29,10 @@ public class UsersController : ControllerBase {
     public async Task<ActionResult<List<UserDto>>> GetAllUsers() {
         List<UserDto> ans = new();
         foreach (User user in _userRepo.GetMany()) {
-            ans.Add(new UserDto(user));
+            ans.Add(new UserDto(){
+                Id = user.Id,
+                UserName = user.UserName
+            });
         }
         return Ok(ans);
     }
@@ -36,7 +42,10 @@ public class UsersController : ControllerBase {
         foreach (User user in _userRepo.GetMany()) {
             if (user.UserName.Contains(nameSubString))
             {
-                ans.Add(new UserDto(user));
+                ans.Add(new UserDto(){
+                    Id = user.Id,
+                    UserName = user.UserName
+                });
             }
         }
         return Ok(ans);
@@ -46,7 +55,10 @@ public class UsersController : ControllerBase {
         try {
             User user = await _userRepo.GetSingleAsync(id);
             Console.WriteLine(user);
-            return Ok(new UserDto(user));
+            return Ok(new UserDto(){
+                Id = user.Id,
+                UserName = user.UserName
+            });
         }
         catch (Exception e) {
             return BadRequest(e.Message);

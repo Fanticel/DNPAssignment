@@ -84,7 +84,9 @@ public class CommentController(ICommentRepo commentRepo, IUserRepo userRepo) : C
     
     private async Task<CommentDto> CreateDto(Comment comment) {
         User creator = await _userRepo.GetSingleAsync(comment.PosterId);
-        return (new CommentDto(comment) {
+        return (new CommentDto {
+            Id = comment.Id,
+            CommentBody = comment.CommentBody,
             PosterName = creator.UserName
         });
     }

@@ -22,13 +22,19 @@ public class PostsController : ControllerBase {
         List<PostGeneralDto> ans = new();
         foreach (Post post in _postRepo.GetMany()) {
             User creator = await _userRepo.GetSingleAsync(post.PosterId);
-            ans.Add(new PostGeneralDto(post){PosterName = creator.UserName});
+            ans.Add(new PostGeneralDto{
+                PostId = post.PostId,
+                PostTitle = post.PostTitle,
+                PostBody = post.PostBody,
+                PosterName = creator.UserName,
+                Likes = post.Likes,
+                Dislikes = post.Dislikes
+            });
         }
-        Console.WriteLine(ans);
         return Ok(ans);
     }
     
-    [HttpGet("/id={id:int}")]
+    [HttpGet("{id:int}")]
     public async Task<ActionResult<PostSpecificDto>> GetSinglePost([FromRoute] int id) {
         try {
             Post post = await _postRepo.GetSingleAsync(id);
@@ -37,10 +43,20 @@ public class PostsController : ControllerBase {
             foreach (int comId in post.CommentIds) {
                 Comment c = await _commentRepo.GetSingleAsync(comId);
                 User ccreator = await _userRepo.GetSingleAsync(c.PosterId);
-                commentDtos.Add(new CommentDto(c){PosterName = ccreator.UserName});
+                commentDtos.Add(new CommentDto {
+                    Id = c.Id,
+                    CommentBody = c.CommentBody,
+                    PosterName = ccreator.UserName
+                });
             }
-            PostSpecificDto ans = new(post) {
+            PostSpecificDto ans = new() {
+                PostId = post.PostId,
+                PostTitle = post.PostTitle,
+                PostBody = post.PostBody,
                 PosterName = creator.UserName,
+                PosterId = creator.Id,
+                Likes = post.Likes,
+                Dislikes = post.Dislikes,
                 Comments = commentDtos
             };
             return Ok(ans);
@@ -54,8 +70,16 @@ public class PostsController : ControllerBase {
         try {
             List<PostGeneralDto> ans = new();
             foreach (Post post in _postRepo.GetMany()) {
+                User creator = await _userRepo.GetSingleAsync(post.PosterId);
                 if (post.PostTitle.Contains(subString)) {
-                    ans.Add(new PostGeneralDto(post));
+                    ans.Add(new PostGeneralDto{
+                        PostId = post.PostId,
+                        PostTitle = post.PostTitle,
+                        PostBody = post.PostBody,
+                        PosterName = creator.UserName,
+                        Likes = post.Likes,
+                        Dislikes = post.Dislikes
+                    });
                 }
             }
             return Ok(ans);
@@ -65,14 +89,18 @@ public class PostsController : ControllerBase {
         }
     }
     [HttpPost]
-    public async Task<ActionResult<List<PostGeneralDto>>> AddPost([FromBody] CreatePostDto createPostDto) {
+    public async Task<ActionResult<PostGeneralDto>> AddPost([FromBody] CreatePostDto createPostDto) {
         try {
             Post post = await _postRepo.AddAsync(new Post(createPostDto.PosterId, createPostDto.PostTitle, createPostDto.PostBody));
             User creator = await _userRepo.GetSingleAsync(post.PosterId);
-            PostGeneralDto answer = new(post) {
-                PosterName = creator.UserName 
+            PostGeneralDto answer = new() {
+                PostId = post.PostId,
+                PostTitle = post.PostTitle,
+                PostBody = post.PostBody,
+                PosterName = creator.UserName,
+                Likes = post.Likes,
+                Dislikes = post.Dislikes
             };
-            // Console.WriteLine(_userRepo.GetSingleAsync(post.PosterId).Result.UserName);
             return Ok(answer);
         }
         catch (Exception e) {
@@ -91,7 +119,8 @@ public class PostsController : ControllerBase {
     }
     [HttpPatch("{id:int}")]
     public async Task<ActionResult> UpdatePost([FromRoute] int id,[FromBody] UpdatePostDto postDto) {
-        Post post = new Post(postDto.PosterId, postDto.PostTitle, postDto.PostTitle);
+        Post post = new Post(postDto.PosterId, postDto.PostTitle, postDto.PostBody);
+        post.CommentIds = postDto.Comments;
         post.PostId = id;
         try {
             await _postRepo.UpdateAsync(post);
