@@ -2,14 +2,15 @@
 
 public class Post {
     //TODO: probably switch the likes/dislikes from a counter to a list of users that liked?
+    //nice to do man :) | like 2 months later
+    public int PostId { get; set; }
     public int Likes { get; set; }
     public int Dislikes { get; set; }
-    public int PostId { get; set; }
     public int PosterId { get; set; }
     public List<int> CommentIds { get; set; }
     public string PostTitle { get; set; }
     public string PostBody { get; set; }
-    
+    private Post(){} //for EFC
     public Post(int posterId, string postTitle, string postBody) {
         Likes = 0;
         Dislikes = 0;

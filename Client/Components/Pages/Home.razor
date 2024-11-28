@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/main"
 @using Client.Services
 @using DTOs
 @inject IPostService PostService;
@@ -37,7 +37,7 @@
     </Authorized>
     <NotAuthorized>
         Hihi you are not logged in :)
-        <button class="btn btn-outline-info" @onclick='() => navMgr.NavigateTo("/login")'>go to login</button>
+        <button class="btn btn-outline-info" @onclick='() => navMgr.NavigateTo("/")'>go to login</button>
     </NotAuthorized>
 </AuthorizeView>
 </body>

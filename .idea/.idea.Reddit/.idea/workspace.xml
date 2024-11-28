@@ -16,30 +16,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d97c9a1-2138-4b65-b1d5-194510053908" name="Changes" comment="Full blazour implementation">
-      <change afterPath="$PROJECT_DIR$/Client/Auth/SimpleAuthProvider.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/Components/Pages/LoginPage.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DTOs/LoginRequestDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/MeaningfulName/Controllers/AuthController.cs" afterDir="false" />
+    <list default="true" id="1d97c9a1-2138-4b65-b1d5-194510053908" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Server/EfcRepo/AppContext.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server/EfcRepo/EfcCommentRepo.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server/EfcRepo/EfcPostRepo.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server/EfcRepo/EfcUserRepo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Reddit/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Reddit/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Client.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/Components/Pages/CreatePost.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Components/Pages/CreatePost.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/Components/Pages/CreateUser.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Components/Pages/CreateUser.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/Components/Pages/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Components/Pages/Home.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/Components/Pages/SpecificPost.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Components/Pages/SpecificPost.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/Components/Routes.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Components/Routes.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/Components/_Imports.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Components/_Imports.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/wwwroot/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/Client/wwwroot/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/wwwroot/bootstrap/bootstrap.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/Client/wwwroot/bootstrap/bootstrap.min.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/MeaningfulName/CommentFile.json" beforeDir="false" afterPath="$PROJECT_DIR$/Server/MeaningfulName/CommentFile.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/MeaningfulName/PostFile.json" beforeDir="false" afterPath="$PROJECT_DIR$/Server/MeaningfulName/PostFile.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/Components/Pages/LoginPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Components/Pages/LoginPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Reddit.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Reddit.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/Entities/Comment.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Entities/Comment.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/Entities/Post.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Entities/Post.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/Entities/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Entities/User.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/MeaningfulName/MeaningfulName.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Server/MeaningfulName/MeaningfulName.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server/MeaningfulName/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/MeaningfulName/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DarkyenusTimeTracker">
+    <option name="totalTimeSeconds" value="5619" />
+    <option name="idleThresholdMs" value="30000" />
+    <option name="autoCountIdleSeconds" value="15" />
+    <option name="gitIntegration" value="true" />
+    <option name="naggedAbout" value="1" />
   </component>
   <component name="DpaMonitoringSettings">
     <option name="autoShow" value="false" />
@@ -72,23 +74,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.Client: http.executor": "Run",
-    ".NET Launch Settings Profile.MeaningfulName: http.executor": "Run",
-    ".NET Project.CLI.executor": "Run",
-    ".NET Project.Main.executor": "Run",
-    "DefaultPlantUmlFileTemplate": "UML Object",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "CSharpTypeNameHintsOptions",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.Client: http.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.MeaningfulName: http.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Project.CLI.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Project.Main.executor&quot;: &quot;Run&quot;,
+    &quot;DefaultPlantUmlFileTemplate&quot;: &quot;UML Object&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
+    ]
   }
-}]]></component>
+}</component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="dotnet ef dbcontext script" />
+    </option>
+  </component>
   <component name="RunManager" selected=".NET Launch Settings Profile.Client: http">
     <configuration name="CLI" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -277,7 +289,12 @@
       <workItem from="1729751476348" duration="18530000" />
       <workItem from="1731412123744" duration="8020000" />
       <workItem from="1731494983703" duration="23671000" />
-      <workItem from="1731570804152" duration="17263000" />
+      <workItem from="1731570804152" duration="17452000" />
+      <workItem from="1731655165255" duration="785000" />
+      <workItem from="1731657976591" duration="938000" />
+      <workItem from="1731673725647" duration="22000" />
+      <workItem from="1732568595839" duration="3484000" />
+      <workItem from="1732816400642" duration="4448000" />
     </task>
     <task id="LOCAL-00001" summary="InitCommit">
       <option name="closed" value="true" />
@@ -335,7 +352,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731575310672</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Implemented auth, because of how leaving comments is implemented (it refreshes the page after leaving the comment) it is broken until caching is added">
+      <option name="closed" value="true" />
+      <created>1731607820685</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1731607820685</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -364,7 +389,8 @@
     <MESSAGE value="WebAPI update" />
     <MESSAGE value="WebAPI updated" />
     <MESSAGE value="Full blazour implementation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Full blazour implementation" />
+    <MESSAGE value="Implemented auth, because of how leaving comments is implemented (it refreshes the page after leaving the comment) it is broken until caching is added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented auth, because of how leaving comments is implemented (it refreshes the page after leaving the comment) it is broken until caching is added" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

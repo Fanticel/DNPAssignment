@@ -1,4 +1,4 @@
-@page "/login"
+@page "/"
 @using Client.Auth
 @using DTOs
 @* @using Microsoft.AspNetCore.Components.Authorization *@
@@ -52,7 +52,7 @@
         errorMessage = "";
         try {
             await ((SimpleAuthProvider)AuthProvider).Login(request);
-            navMgr.NavigateTo("/");
+            navMgr.NavigateTo("/main");
         }
         catch (Exception e) {
             Console.WriteLine(e);
